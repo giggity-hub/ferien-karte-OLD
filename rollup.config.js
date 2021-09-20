@@ -5,8 +5,16 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import json from 'rollup-plugin-json';
+import alias from '@rollup/plugin-alias';
 
 const production = !process.env.ROLLUP_WATCH;
+
+const aliases = alias({
+	resolve: ['.svelte', '.js'], //optional, by default this will just look for .js files or folders
+	entries: [
+	  { find: 'stores', replacement: 'src/stores' },
+	]
+  });
 
 function serve() {
 	let server;
@@ -44,9 +52,11 @@ export default {
 				dev: !production
 			}
 		}),
+		// My custom dependencies:
 		json({
 			compact: true
 		}),
+		aliases,
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
