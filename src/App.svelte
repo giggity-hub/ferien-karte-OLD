@@ -25,6 +25,8 @@
 	:root{
 		--calendar-head-height : 80px;
 	}
+
+	
 	.map-wrapper{
 		background: blue;
 		flex-grow: 1;
@@ -36,10 +38,10 @@
 	}
 
 
-	@media only screen and (max-width: 900px) {
+	@media (max-width: 1000px) {
 		.map-wrapper{
 			position: fixed;
-			height: 90vh;
+			height: calc(100vh - var(--calendar-head-height));
 		}
 		.wrapper{
 			width: 100%;
@@ -49,7 +51,7 @@
   		.calendar-wrapper {
 			background-color: lightblue;
 			position: absolute;
-			top: 90vh;
+			top: calc(100vh - var(--calendar-head-height));
 			}
 		}
 
