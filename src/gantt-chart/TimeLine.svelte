@@ -29,10 +29,12 @@
     function attachMousePositionListener(e){
         handler(e)
         document.addEventListener('mousemove', handler)
+        document.addEventListener('touchmove', handler)
     }
 
     function removeMousemoveListener(){
         document.removeEventListener('mousemove', handler)
+        document.removeEventListener('touchmove', handler);
     }
 
     
