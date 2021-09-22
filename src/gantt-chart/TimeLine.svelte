@@ -35,12 +35,11 @@
         document.removeEventListener('mousemove', handler)
     }
 
-    onMount(()=>{
+    
+    function resizeHandler(){
         width = ref.getBoundingClientRect().width
-
-
-    })
-
+    }
+    onMount(resizeHandler)
     let scaleX =  scaleLinear()
                     .domain([min, max])
                     .range([0, 100])
@@ -57,7 +56,7 @@ console.log(ticks);
 console.log(ticks.map(scaleX));
 </script>
 
-<svelte:window on:mouseup={removeMousemoveListener} />
+<svelte:window on:resize={resizeHandler} on:mouseup={removeMousemoveListener} />
 
 
 <div bind:this={ref} on:mousedown|preventDefault={attachMousePositionListener} class="timeline">
