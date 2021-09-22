@@ -14,7 +14,7 @@
     function getLastDayOfYear(year){
         return new Date(year,11,31);
     }
-    // console.log(Object.keys(ferien).indexOf('2021'));
+
     let selectedDay = new Date()
     let selectedYear = selectedDay.getFullYear()
     let firstDayOfYear = getFirstDayOfYear(selectedDay.getFullYear())
@@ -70,14 +70,6 @@
     }
 
 
-    let count_value;
-
-    store.subscribe(value => {
-        count_value = value;
-    });
-
-    console.log(count_value);
-
 </script>
 
 <div class="kalenderview">
@@ -110,13 +102,14 @@
     .schmontainer{
         width: 100%;
         height: 100%;
+        position: relative;
         /* transform: translateX(-100%); */
         display: flex;
         transition: all .2s linear;
     }
     .grid{
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: 50px auto;
         grid-template-rows: 50px auto;
         grid-template-areas: 
             ". header"
@@ -136,7 +129,7 @@
         background: yellow;
         /* transform: translateX(-30px); */
         /* width: 800px; */
-        width: 800px;
+        /* width: 50%; */
         /* height: 800px; */
         display: flex;
         overflow: hidden;

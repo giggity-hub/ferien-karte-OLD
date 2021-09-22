@@ -1,28 +1,34 @@
 <script>
-    import {scaleLinear} from 'd3'
+    import {scaleLinear, scaleTime} from 'd3'
     export let ferien;
     let width = 500;
     let height = 800;
     export let year;
 
-    console.log(ferien);
-
     function getFirstDayOfYear(year){
-        return + new Date(year,0,1);
+        return +new Date(year,0,1);
     }
     function getLastDayOfYear(year){
-        return + new Date(year,11,31);
+        return +new Date(year,11,31);
     }
 
     let scale =  scaleLinear()
                     .domain([getFirstDayOfYear(year), getLastDayOfYear(year)])
                     .range([0, 100])
+   
+
+
+    let scale2 =  scaleTime()
+                    .domain([new Date(2021,0,1), new Date(2021,11,31)])
+                    .range([0, 100])
+                    .ticks()
+    // console.log(scale2);
 </script>
 
 
 
 <div class="year">
-
+        
         {#each Object.entries(ferien) as [key, bundesland], i}
             <!-- {console.log(bundesland)} -->
             <div class="row">

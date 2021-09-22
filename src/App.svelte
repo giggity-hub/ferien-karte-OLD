@@ -8,17 +8,31 @@
 </script>
 
 <main>
-	<Map/>
+	<div class="map-wrapper">
+		<Map/>
+	</div>
 
-	{#await ferien}
-	loading schmoading
-	{:then ferien}
-		<KalenderView {ferien}/>
-	{/await}
+	<div class="calendar-wrapper">
+		{#await ferien}
+		loading schmoading
+		{:then ferien}
+			<KalenderView {ferien}/>
+		{/await}
+	</div>
 </main>
 
 <style>
+	.map-wrapper{
+		background: blue;
+		flex-grow: 1;
+	}
+	.calendar-wrapper{
+		background: orange;
+		flex-grow: 1;
+	}
 	main{
 		display: flex;
+		background: orchid;
+		height: 100vh;
 	}
 </style>

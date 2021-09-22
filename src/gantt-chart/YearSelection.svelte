@@ -27,17 +27,22 @@
     }
 </script>
 
-<button class:muted={!isDecrementable} on:click={decrementYear}>
-    -
-</button>
-<div>
-    {date.getFullYear()}
+<div class="year-selection">
+    <button class:muted={!isDecrementable} on:click={decrementYear}>
+        -
+    </button>
+    <div>
+        {date.getFullYear()}
+    </div>
+    <button class:muted={!isIncrementable} on:click={incrementYear}>
+        +
+    </button>
 </div>
-<button class:muted={!isIncrementable} on:click={incrementYear}>
-    +
-</button>
 
 <style>
+    .year-selection{
+        display: flex;
+    }
     button{
         background: white;
     }
