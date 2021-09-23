@@ -19,7 +19,7 @@
     position: absolute;
     height: 100%;
     border-left: 1px solid black;
-
+    pointer-events: none;
     width: 0;
     }
 </style>

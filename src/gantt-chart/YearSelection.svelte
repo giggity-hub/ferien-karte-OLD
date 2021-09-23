@@ -1,7 +1,8 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     export let years;
     export let date;
+    import {createPopper} from '@popperjs/core'
     
 
     const dispatch = createEventDispatcher();
@@ -25,6 +26,12 @@
             date
         })
     }
+
+    let btnRef;
+    let tooltipRef;
+    onMount(()=>{
+        const popperInstance = createPopper(btnRef, tooltipRef)
+    })
 </script>
 
 <div class="year-selection">
@@ -34,12 +41,17 @@
     <div>
         {date.getFullYear()}
     </div>
-    <button class:muted={!isIncrementable} on:click={incrementYear}>
+    <button bind:this={btnRef} class:muted={!isIncrementable} on:click={incrementYear}>
         +
     </button>
+    <div class="tip" bind:this={tooltipRef}>tooltip schmultip</div>
 </div>
 
 <style>
+    .tip{
+        background: black;
+        color: white;
+    }
     .year-selection{
         display: flex;
     }

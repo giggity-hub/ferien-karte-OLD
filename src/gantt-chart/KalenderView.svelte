@@ -77,7 +77,7 @@
     <div>{selectedDay.getDate()}.{selectedDay.getMonth()}.{selectedDay.getFullYear()}</div>
     <div class="grid">
         <div class="grid__header">
-            <TimeLine on:change={updateSelectedDay} min={firstDayOfYear} max={lastDayOfYear} />
+            <TimeLine on:change={updateSelectedDay} min={firstDayOfYear} max={lastDayOfYear} date={selectedDay}/>
         </div>
         <div class="grid__aside">
             <StateCodes/>

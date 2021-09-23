@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import json from 'rollup-plugin-json';
 import alias from '@rollup/plugin-alias';
+import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -57,6 +58,12 @@ export default {
 			compact: true
 		}),
 		aliases,
+		// we need to replace plugin for tippy.js
+		// see https://atomiks.github.io/tippyjs/v5/faq/#rollup
+		replace({
+			'process.env.NODE_ENV': JSON.stringify('production'),
+		}),
+
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),

@@ -28,3 +28,17 @@ function createVacationStore(){
 
 
 export const store = createVacationStore();
+
+
+function createSelectedState(){
+    const {subscribe, set} = writable(null)
+
+    return {
+        subscribe,
+        set,
+        reset : () => set(null)
+    }
+}
+
+// show which state is being hovered
+export const selectedState = createSelectedState()

@@ -1,5 +1,6 @@
 <script>
     import {scaleLinear, scaleTime} from 'd3'
+    import {selectedState} from 'stores/store.js'; 
     export let ferien;
     let width = 500;
     let height = 800;
@@ -29,10 +30,13 @@
 
 <div class="year">
         
-        {#each Object.entries(ferien) as [key, bundesland], i}
-            <!-- {console.log(bundesland)} -->
-            <div class="row">
-                {#each bundesland as holidy}
+        {#each Object.entries(ferien) as [stateCode, vacations], i}
+            
+            <div class="row" 
+                on:mouseenter={()=> selectedState.set(stateCode)}
+                on:mouseleave={selectedState.reset}
+                class:is-selected={$selectedState === stateCode}>
+                {#each vacations as holidy}
                     <div class="test {holidy.type}" style="
                         left:{scale(Date.parse(holidy.start))}%;
                         width:{scale(getFirstDayOfYear(year) + Date.parse(holidy.end) - Date.parse(holidy.start))}%"></div>
@@ -61,9 +65,12 @@
         position: relative;
         height: 40px;
     }
-    .row:hover{
+    .row.is-selected{
         background: darkred;
     }
+    /* .row:hover{
+        background: darkred;
+    } */
     .test{
         background: black;
         height: 10px;
