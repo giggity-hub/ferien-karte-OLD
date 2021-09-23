@@ -15,15 +15,40 @@ import { onMount } from 'svelte';
     let svgRef;
     let popperContext;
     onMount(()=>{
-        // const virtualElement = {
-        //     getBoundingClientRect: popperContext.getBoundingClientRect
-        // }
-        // const instance = createPopper(virtualElement, popper)
-        // const popperInstance = createPopper(svgRef, tooltipRef)
+        function generateGetBoundingClientRect(x = 0, y = 0) {
+        return () => ({
+            width: 0,
+            height: 10,
+            top: y,
+            right: x,
+            bottom: y,
+            left: x,
+        });
+        }
+
+        const virtualElement = {
+            getBoundingClientRect: generateGetBoundingClientRect(),
+        };
+        const instance = createPopper(virtualElement, tooltipRef, {
+            modifiers: [
+                {
+                name: 'preventOverflow',
+                options: {
+                    boundary: popperContext,
+                },
+                },
+            ],
+            });
+
+        document.addEventListener('mousemove', ({ clientX: x, clientY: y }) => {
+        virtualElement.getBoundingClientRect = generateGetBoundingClientRect(x, y);
+        console.log(generateGetBoundingClientRect(x, y)());
+        instance.update();
+        });
     })
     function handleShow({detail}){
-        console.log(detail);
-        const popperInstance = createPopper(detail.ref, tooltipRef)
+        // console.log(detail);
+        // const popperInstance = createPopper(detail.ref, tooltipRef)
     }
 
 </script>
@@ -38,6 +63,7 @@ import { onMount } from 'svelte';
      </svg>
      
 </div>
+
 
 <style>
     .tooltip{
