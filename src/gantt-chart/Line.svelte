@@ -11,10 +11,10 @@
 </script>
 
 
-<div class="line" style="left:{scalePos(date)}%"></div>
+<div class="absolute top-0 h-full border-l pointer-events-none" style="left:{scalePos(date)}%"></div>
 
 
-<style>
+<!-- <style>
     .line{
     position: absolute;
     height: 100%;
@@ -22,4 +22,4 @@
     pointer-events: none;
     width: 0;
     }
-</style>
+</style> -->

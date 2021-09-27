@@ -18,7 +18,10 @@
     }
     
     let width = 0; //initial value damit der folgende code nicht breakt
-    let scaleDay; 
+    $: scaleDay = scaleLinear()
+                    .domain([0, width])
+                    .range([min, max])
+                    .clamp(true)
     
 
 
@@ -39,18 +42,16 @@ function handleInput(e){
 }
 
 
+$: relX = scaleDay.invert(date)
 
 function resizeHandler(){
     width = ref.getBoundingClientRect().width
-    scaleDay = scaleLinear()
-                    .domain([0, width])
-                    .range([min, max])
-                    .clamp(true)
-
-
-
-    relX = scaleDay.invert(date);
-    console.log(relX);
+    // scaleDay = scaleLinear()
+    //                 .domain([0, width])
+    //                 .range([min, max])
+    //                 .clamp(true)
+    // relX = scaleDay.invert(date);
+    // console.log(relX);
 }
 onMount(resizeHandler)
 

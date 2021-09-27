@@ -20,15 +20,17 @@
     let popperInstance
 
 
-    function show(){
+    function show(event){
         dispatch('show', {
-            ref
+            event,
+            stateCode,
+            activeVacation
         })
     }
 </script>
 
 <path bind:this={ref}
-    on:mouseenter={show}
+    on:mousedown|stopPropagation={show}
     stroke="blue"
     stroke-width="1"
     class={ activeVacation ? activeVacation.type + " active" : ""}

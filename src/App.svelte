@@ -1,28 +1,59 @@
 <script>
 	import KalenderView from './gantt-chart/KalenderView.svelte';
 	import Map from './Map/Map.svelte';
+	import "tailwindcss/tailwind.css"
+import Test from './Test.svelte';
 
 	const ferienUrl = 'https://raw.githubusercontent.com/giggity-hub/schulferien/main/ferien.json'
     let ferien = fetch(ferienUrl)
         .then(res => res.json())
 </script>
 
-<main>
-	<div class="map-wrapper wrapper">
-		<Map/>
-	</div>
+<!-- <main class="flex flex-col xl:flex-row">
+	
 
-	<div class="calendar-wrapper wrapper">
+	<div class="flex-1 ">
 		{#await ferien}
 		loading schmoading
 		{:then ferien}
 			<KalenderView {ferien}/>
 		{/await}
 	</div>
-</main>
+</main> -->
 
-<style>
-	:root{
+
+
+
+<div class="flex flex-col mx-auto lg:flex-row lg:max-w-screen-2xl ">
+	<div class="bg-green-400 max-h-subtract-input sticky top-0 z-0 lg:h-screen lg:w-2/5 ">
+		<Map/>
+	</div>
+	
+	<div class="z-10 flex-1 lg:max-w-5xl lg:w-3/5">
+	
+	
+		<div class="bg-gray-200 overflow-hidden">
+			<div class="">
+				{#await ferien}
+					warten schmarten
+				{:then ferien} 
+					<KalenderView {ferien}/>
+					<!-- <Test/> -->
+				{/await}
+			</div>
+		</div>
+	</div>
+</div>
+
+<style windi:preflights:global windi:safelist:global>
+	.max-h-subtract-input{
+		height: calc(100vh - theme('spacing.32'))
+	}
+	/* @tailwind base;
+	@tailwind components;
+	@tailwind utilities; */
+
+	/* :root{
 		--calendar-head-height : 80px;
 	}
 
@@ -59,5 +90,5 @@
 		display: flex;
 		background: orchid;
 		height: 100vh;
-	}
+	} */
 </style>

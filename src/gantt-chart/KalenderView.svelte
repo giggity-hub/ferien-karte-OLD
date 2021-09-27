@@ -1,5 +1,5 @@
 <script>
-    
+    import { fade, fly } from 'svelte/transition';
     import StateCodes from './StateCodes.svelte';
     import Year from './Year.svelte';
     import TimeLine from './TimeLine.svelte'
@@ -7,6 +7,12 @@
     import YearSelection from './YearSelection.svelte';
     import {store} from 'stores/store.js';
     export let ferien;
+    import Map from '../Map/Map.svelte';
+    import Splide from '@splidejs/splide';
+    import { onMount } from 'svelte';
+    import 'slider-core.min.css'
+import Test from '../Test.svelte';
+import Years from './Years.svelte';
 
     function getFirstDayOfYear(year){
         return new Date(year,0,1);
@@ -57,6 +63,8 @@
     }
     // getActiveHoliday("NW")
     function updateSelectedDay({detail}){
+        console.log(firstDayOfYear);
+        console.log(lastDayOfYear);
         selectedDay = detail.date;
         firstDayOfYear = getFirstDayOfYear(selectedDay.getFullYear())
         lastDayOfYear = getLastDayOfYear(selectedDay.getFullYear())
@@ -69,31 +77,70 @@
         // console.log(getActiveHoliday('NW'))
     }
 
+    console.log(ferien);
+
 
 </script>
 
-<div class="kalenderview">
-    <YearSelection date={selectedDay} years={Object.keys(ferien)} on:change={updateSelectedDay}/>
-    <div>{selectedDay.getDate()}.{selectedDay.getMonth()}.{selectedDay.getFullYear()}</div>
-    <div class="grid">
-        <div class="grid__header">
+<div class="p-8 flex flex-col ">
+    
+
+        <div class="h-24 bg-blue-300 pl-12">
+                <!-- <div>{selectedDay.getDate()}.{selectedDay.getMonth()}.{selectedDay.getFullYear()}</div> -->
+            <YearSelection date={selectedDay} years={Object.keys(ferien)} on:change={updateSelectedDay}/>
+        
+            shosh
             <TimeLine on:change={updateSelectedDay} min={firstDayOfYear} max={lastDayOfYear} date={selectedDay}/>
         </div>
-        <div class="grid__aside">
-            <StateCodes/>
-        </div>
-        <div class="grid__body">
-            <div class="container">
-                
-                <div class="schmontainer" style="transform: translateX({-100 * Object.keys(ferien).indexOf(selectedDay.getFullYear().toString())}%)">
+
+        <div class="flex-grow-0 flex relative w-full">
+            <div class="w-12 flex-none">
+                <StateCodes/>
+            </div>
+            <div class="bg-black min-w-0 flex-1">
+                <div class=" h-full bg-white relative">
+                    
+               
+                        <Years {ferien} year={selectedDay.getFullYear()} />
+     
+                        <Line min={firstDayOfYear} max={lastDayOfYear} date={selectedDay} />
+
+                    <!-- <Test/> -->
+                </div>
+            </div>
+            
+                <!-- <div class="splide__list placeholder bg-black h-screen w-full flex relative">
+                    
+                        <div class="splide__slide bg-green-400 flex-none h-full w-full">
+                            asdf
+                        </div>
+                        <div class="splide__slide bg-orange-400 flex-none  h-full w-full">
+                            asdf
+                        </div>
+                        <div class="splide__slide bg-blue-400 flex-none  h-full w-full">
+                            asdf
+                        </div>
+                </div> -->
+                    <!-- <Line min={firstDayOfYear} max={lastDayOfYear} date={selectedDay} />
+                    <Year  ferien={ferien[selectedDay.getFullYear()]} year={selectedDay.getFullYear()} /> -->
+                    <!-- <div class="flex " style="transform: translateX({-100 * Object.keys(ferien).indexOf(selectedDay.getFullYear().toString())}%)">
                         {#each Object.entries(ferien) as [key, ferienYear], i}
                             <Year ferien={ferienYear} year={key} />
                         {/each}
-                </div>
-                <Line min={firstDayOfYear} max={lastDayOfYear} date={selectedDay} />
-            </div>
+                    </div> -->
+                    
+                
+            
         </div>
-    </div>
+
+  
+        <div class="">
+            <!-- <div class="">
+                
+                
+            </div> -->
+        </div>
+  
 </div>
 
 

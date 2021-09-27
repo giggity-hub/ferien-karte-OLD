@@ -44,7 +44,7 @@
     <button bind:this={btnRef} class:muted={!isIncrementable} on:click={incrementYear}>
         +
     </button>
-    <div class="tip" bind:this={tooltipRef}>tooltip schmultip</div>
+    
 </div>
 
 <style>

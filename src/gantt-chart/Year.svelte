@@ -1,9 +1,10 @@
 <script>
     import {scaleLinear, scaleTime} from 'd3'
     import {selectedState} from 'stores/store.js'; 
+import { onMount } from 'svelte';
+    import { fade, fly } from 'svelte/transition';
     export let ferien;
-    let width = 500;
-    let height = 800;
+
     export let year;
 
     function getFirstDayOfYear(year){
@@ -13,7 +14,7 @@
         return +new Date(year,11,31);
     }
 
-    let scale =  scaleLinear()
+    $: scale =  scaleLinear()
                     .domain([getFirstDayOfYear(year), getLastDayOfYear(year)])
                     .range([0, 100])
    
@@ -23,36 +24,46 @@
                     .domain([new Date(2021,0,1), new Date(2021,11,31)])
                     .range([0, 100])
                     .ticks()
+
+    
     // console.log(scale2);
+    let ref;
+    let width = 0
+    onMount(()=>{
+        width = ref.getBoundingClientRect().width
+    })
+
 </script>
 
 
 
-<div class="year">
+{#key year}
+<div bind:this={ref} class="year absolute" in:fly="{{x: width, duration:2000}}" out:fly="{{x: -width, duration:2000}}">
         
-        {#each Object.entries(ferien) as [stateCode, vacations], i}
-            
-            <div class="row" 
-                on:mouseenter={()=> selectedState.set(stateCode)}
-                on:mouseleave={selectedState.reset}
-                class:is-selected={$selectedState === stateCode}>
-                {#each vacations as holidy}
-                    <div class="test {holidy.type}" style="
-                        left:{scale(Date.parse(holidy.start))}%;
-                        width:{scale(getFirstDayOfYear(year) + Date.parse(holidy.end) - Date.parse(holidy.start))}%"></div>
+    {#each Object.entries(ferien) as [stateCode, vacations], i}
+        
+        <div class="row" 
+            on:mouseenter={()=> selectedState.set(stateCode)}
+            on:mouseleave={selectedState.reset}
+            class:is-selected={$selectedState === stateCode}>
+            {#each vacations as holidy}
+                <div class="test {holidy.start} {holidy.type}" style="
+                    left:{scale(Date.parse(holidy.start))}%;
+                    width:{scale(getFirstDayOfYear(year) + Date.parse(holidy.end) - Date.parse(holidy.start))}%"></div>
 
-                    <!-- <rect style="fill: #69b3a2"  x={scale(Date.parse(holidy.start))} y={i*20} 
-                    width={scale(firstDayOfYear(2021) + Date.parse(holidy.end) - Date.parse(holidy.start))}
-                    height=10
-                    rx=3
-                    /> -->
-                {/each}
-            </div>
+                <!-- <rect style="fill: #69b3a2"  x={scale(Date.parse(holidy.start))} y={i*20} 
+                width={scale(firstDayOfYear(2021) + Date.parse(holidy.end) - Date.parse(holidy.start))}
+                height=10
+                rx=3
+                /> -->
+            {/each}
+        </div>
 
-        {/each}
-    
+    {/each}
+
 
 </div>
+{/key}
 
 <style>
 

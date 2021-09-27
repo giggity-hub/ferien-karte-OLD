@@ -3,7 +3,10 @@
     import Bundesland from './Bundesland.svelte';
     import {create, geoMercator, geoPath} from 'd3';
     import {createPopper} from '@popperjs/core'
-import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
+    import coatOfArms from 'stores/coatOfArms.js';
+    import Popper from './Popper.svelte';
+    const stopPropagation = (e) => e.stopPropagation()
 
     let width = 800;
 	let height = 900;
@@ -14,73 +17,112 @@ import { onMount } from 'svelte';
     let tooltipRef;
     let svgRef;
     let popperContext;
-    onMount(()=>{
-        function generateGetBoundingClientRect(x = 0, y = 0) {
+    let instance;
+    let popperStateCode;
+    function generateGetBoundingClientRect(x = 0, y = 0) {
         return () => ({
             width: 0,
-            height: 10,
+            height: 0,
             top: y,
             right: x,
             bottom: y,
             left: x,
         });
         }
+    const virtualElement = {
+        getBoundingClientRect: generateGetBoundingClientRect(),
+    };
+    onMount(()=>{
+        
 
-        const virtualElement = {
-            getBoundingClientRect: generateGetBoundingClientRect(),
-        };
-        const instance = createPopper(virtualElement, tooltipRef, {
+        
+        instance = createPopper(virtualElement, tooltipRef, {
+            placement: 'top',
             modifiers: [
                 {
                 name: 'preventOverflow',
-                options: {
-                    boundary: popperContext,
+                    options: {
+                        boundary: popperContext,
+                        altAxis: true,
+                        
+                        // padding: 8,
+                    },
                 },
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 8],
+                    }
                 },
+                {
+                    name: 'computeStyles',
+                    options: {
+                        // if activated can cause negative translate values which can result in the popper transition going off screen.
+                        adaptive: false
+                    }
+                }
             ],
             });
-
-        document.addEventListener('mousemove', ({ clientX: x, clientY: y }) => {
-        virtualElement.getBoundingClientRect = generateGetBoundingClientRect(x, y);
-        console.log(generateGetBoundingClientRect(x, y)());
-        instance.update();
-        });
+        
+ 
     })
+
+    let popperVacation;
+
+    let isTransitionEnabled = false;
+    function updateShit(event){
+            let {clientX, clientY} = event;
+            console.log(clientX, clientY);
+            virtualElement.getBoundingClientRect = generateGetBoundingClientRect(clientX, clientY);
+            instance.update();
+        }
     function handleShow({detail}){
+        isTransitionEnabled = popperStateCode != null;
+        popperStateCode = detail.stateCode == popperStateCode ? null : detail.stateCode;
+        updateShit(detail.event)
+        popperVacation = detail.activeVacation;
         // console.log(detail);
         // const popperInstance = createPopper(detail.ref, tooltipRef)
     }
-
+    
 </script>
 
-<div bind:this={popperContext}  class="svg-container">
-    <div class="tooltip" bind:this={tooltipRef}>Toool tip schmultipasdf asdf</div>
-    <svg viewBox="0 0 750 900">
+<svelte:window on:mousedown={()=> {
+    popperStateCode = null;
+    isTransitionEnabled = false;
+}}/>
+
+<div class="p-5 h-full flex items-center">
+    <div bind:this={popperContext}  class="svg-container flex-1 bg-red-400 flex items-center justify-center" >
+
+    
+        <Popper bind:ref={tooltipRef} {popperVacation} {popperStateCode} {isTransitionEnabled} />
+        
+    
+
+    <svg viewBox="0 0 750 900" class="max-h-full">
         {#each bundesländer.features as bundesland,i}
             <Bundesland on:show={handleShow} {tooltipRef} {bundesland} {geoGenerator}/>
         {/each}
      
      </svg>
      
+    </div>
 </div>
 
 
 <style>
-    .tooltip{
-        position: absolute;
-        background: red;
-        min-height: 100px;
-    }
+
     .tooltip[data-show]{
         background: orange !important;
     }
     .svg-container{
-        position: relative;
+        
         height: 100%;
-        
+
+        /* background: green; */
+        overflow: hidden;
         
     }
-    svg{
-        max-height: 100%;
-    }
+
 </style>

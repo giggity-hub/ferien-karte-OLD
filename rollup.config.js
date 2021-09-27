@@ -7,6 +7,8 @@ import css from 'rollup-plugin-css-only';
 import json from 'rollup-plugin-json';
 import alias from '@rollup/plugin-alias';
 import replace from '@rollup/plugin-replace';
+import sveltePreprocess from "svelte-preprocess";
+import {windi} from 'svelte-windicss-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -14,6 +16,7 @@ const aliases = alias({
 	resolve: ['.svelte', '.js'], //optional, by default this will just look for .js files or folders
 	entries: [
 	  { find: 'stores', replacement: 'src/stores' },
+	  {find: 'utils', replace: 'src/utils'},
 	]
   });
 
@@ -51,7 +54,24 @@ export default {
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
-			}
+			},
+			// Tailwind Css preprocessor
+			// preprocess: sveltePreprocess({
+			// 	sourceMap: !production,
+			// 	postcss: {
+			// 	plugins: [
+			// 	require("tailwindcss"), 
+			// 	require("autoprefixer"),
+			// 	],
+			// 	},
+			// }),
+			// windi css preprocessor
+			preprocess: [
+				windi({
+					// safeList: ['text-sommer'],
+					configPath: 'windi.config.js',
+				}),
+			]
 		}),
 		// My custom dependencies:
 		json({
