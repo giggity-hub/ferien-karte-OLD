@@ -1,9 +1,4 @@
 <script>
-    import { createEventDispatcher, onMount } from 'svelte';
-    // export let years;
-    // export let date;
-    // const dispatch = createEventDispatcher();
-    import {createPopper} from '@popperjs/core'
     import {allHolidays} from 'stores/holidays.js'
     import {selectedDate, selectedYear, firstDateOfSelectedYear, lastDateOfSelectedYear} from 'stores/selection.js'
     

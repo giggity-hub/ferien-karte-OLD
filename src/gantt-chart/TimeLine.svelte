@@ -5,7 +5,7 @@
 </script>
 
 <script>
-import {scaleLinear, scaleTime} from 'd3'
+import {scaleLinear, scaleTime} from 'd3-scale';
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte';
 import {selectedDate, selectedYear, firstDateOfSelectedYear, lastDateOfSelectedYear} from 'stores/selection.js';

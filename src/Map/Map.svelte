@@ -1,7 +1,7 @@
 <script>
     import bundesländer from './bundesländer.geo.json';
     import Bundesland from './Bundesland.svelte';
-    import {create, geoMercator, geoPath} from 'd3';
+    import {geoMercator, geoPath} from 'd3-geo';
     import {createPopper} from '@popperjs/core'
     import { onMount } from 'svelte';
     import coatOfArms from 'stores/coatOfArms.js';
@@ -93,7 +93,7 @@
 }}/>
 
 <div class="p-5 h-full flex items-center">
-    <div bind:this={popperContext}  class="svg-container flex-1 bg-red-400 flex items-center justify-center" >
+    <div bind:this={popperContext}  class="svg-container flex-1 bg-red-800 flex items-center justify-center" >
 
     
         <Popper bind:ref={tooltipRef} {popperVacation} {popperStateCode} {isTransitionEnabled} />

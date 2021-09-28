@@ -1,41 +1,12 @@
 <script>
 	import KalenderView from './gantt-chart/KalenderView.svelte';
 	import Map from './Map/Map.svelte';
-	import "tailwindcss/tailwind.css"
-	import Test from './Test.svelte';
 	import {allHolidays} from 'stores/holidays.js'
-	import { onMount } from 'svelte';
-
-
-	const ferienUrl = 'https://raw.githubusercontent.com/giggity-hub/schulferien/main/ferien.json'
-    let ferien = fetch(ferienUrl)
-        .then(res => res.json())
-
-	// onMount(()=>{
-	// 	fetch(ferienUrl)
-    //     	.then(res => res.json())
-	// 		.then(allHolidays.set)
-	// })
 
 
 </script>
 
 {#if $allHolidays}
-	
-
-<!-- <main class="flex flex-col xl:flex-row">
-	
-
-	<div class="flex-1 ">
-		{#await ferien}
-		loading schmoading
-		{:then ferien}
-			<KalenderView {ferien}/>
-		{/await}
-	</div>
-</main> -->
-
-
 
 
 <div class="flex flex-col mx-auto lg:flex-row lg:max-w-screen-2xl ">
@@ -48,12 +19,9 @@
 	
 		<div class="bg-gray-200 overflow-hidden">
 			<div class="">
-				{#await ferien}
-					warten schmarten
-				{:then ferien} 
-					<KalenderView {ferien}/>
-					<!-- <Test/> -->
-				{/await}
+
+					<KalenderView />
+
 			</div>
 		</div>
 	</div>

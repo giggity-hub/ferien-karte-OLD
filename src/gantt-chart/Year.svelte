@@ -1,5 +1,5 @@
 <script>
-    import {scaleLinear, scaleTime} from 'd3'
+    import {scaleLinear, scaleTime} from 'd3-scale';
     import {selectedState} from 'stores/store.js'; 
 import { onMount } from 'svelte';
     import { fade, fly } from 'svelte/transition';
