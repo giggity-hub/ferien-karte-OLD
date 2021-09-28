@@ -1,17 +1,9 @@
 <script>
-    import {scaleLinear, scaleTime} from 'd3';
-    export let date;
-    export let min;
-    export let max;
-
-    $: scalePos = scaleTime()
-                    .domain([min, max])
-                    .range([0,100])
-                    .clamp(true)
+    import {relX} from './TimeLine.svelte';
 </script>
 
 
-<div class="absolute top-0 h-full border-l pointer-events-none" style="left:{scalePos(date)}%"></div>
+<div class="absolute top-0 h-full border-l pointer-events-none" style="transform: translateX({$relX}px)"></div>
 
 
 <!-- <style>

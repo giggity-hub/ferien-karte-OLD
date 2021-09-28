@@ -2,12 +2,26 @@
 	import KalenderView from './gantt-chart/KalenderView.svelte';
 	import Map from './Map/Map.svelte';
 	import "tailwindcss/tailwind.css"
-import Test from './Test.svelte';
+	import Test from './Test.svelte';
+	import {allHolidays} from 'stores/holidays.js'
+	import { onMount } from 'svelte';
+
 
 	const ferienUrl = 'https://raw.githubusercontent.com/giggity-hub/schulferien/main/ferien.json'
     let ferien = fetch(ferienUrl)
         .then(res => res.json())
+
+	// onMount(()=>{
+	// 	fetch(ferienUrl)
+    //     	.then(res => res.json())
+	// 		.then(allHolidays.set)
+	// })
+
+
 </script>
+
+{#if $allHolidays}
+	
 
 <!-- <main class="flex flex-col xl:flex-row">
 	
@@ -44,7 +58,7 @@ import Test from './Test.svelte';
 		</div>
 	</div>
 </div>
-
+{/if}
 <style windi:preflights:global windi:safelist:global>
 	.max-h-subtract-input{
 		height: calc(100vh - theme('spacing.32'))

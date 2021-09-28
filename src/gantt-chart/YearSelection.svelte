@@ -1,37 +1,42 @@
 <script>
     import { createEventDispatcher, onMount } from 'svelte';
-    export let years;
-    export let date;
+    // export let years;
+    // export let date;
+    // const dispatch = createEventDispatcher();
     import {createPopper} from '@popperjs/core'
+    import {allHolidays} from 'stores/holidays.js'
+    import {selectedDate, selectedYear, firstDateOfSelectedYear, lastDateOfSelectedYear} from 'stores/selection.js'
     
-
-    const dispatch = createEventDispatcher();
-
+    const years = Object.keys($allHolidays).map(Number)
+    
     let maxYear = Math.max(...years);
     let minYear = Math.min(...years);
-
-    $: isIncrementable = maxYear > date.getFullYear()
-    $: isDecrementable = minYear < date.getFullYear()
+    console.log("shosh", $firstDateOfSelectedYear, $lastDateOfSelectedYear);
+    $: isIncrementable = maxYear > $selectedYear
+    $: isDecrementable = minYear < $selectedYear
 
     function incrementYear(){
-        date.setFullYear(date.getFullYear() + 1)
-        dispatch('change', {
-            date
+        selectedDate.update((date) => {
+            date.setFullYear($selectedYear + 1)
+            return date
         })
+        // date.setFullYear(date.getFullYear() + 1)
+        // dispatch('change', {
+        //     date
+        // })
     }
 
     function decrementYear(){
-        date.setFullYear(date.getFullYear() - 1)
-        dispatch('change', {
-            date
+        selectedDate.update((date) => {
+            date.setFullYear($selectedYear - 1)
+            return date
         })
+        // date.setFullYear(date.getFullYear() - 1)
+        // dispatch('change', {
+        //     date
+        // })
     }
 
-    let btnRef;
-    let tooltipRef;
-    onMount(()=>{
-        const popperInstance = createPopper(btnRef, tooltipRef)
-    })
 </script>
 
 <div class="year-selection">
@@ -39,9 +44,9 @@
         -
     </button>
     <div>
-        {date.getFullYear()}
+        {$selectedYear}
     </div>
-    <button bind:this={btnRef} class:muted={!isIncrementable} on:click={incrementYear}>
+    <button  class:muted={!isIncrementable} on:click={incrementYear}>
         +
     </button>
     

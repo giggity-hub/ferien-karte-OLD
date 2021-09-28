@@ -6,13 +6,15 @@
     const dispatch = createEventDispatcher();
 
     import {store, selectedState} from 'stores/store.js';
+    import {activeHolidays} from 'stores/holidays.js';
     import { onMount } from 'svelte';
+    import { selectedDate } from 'stores/selection.js';
     export let tooltipRef;
 
     let stateCode = bundesland.properties.id.split('-')[1]
 
     let activeVacation;
-    const unsubscribe = store.subscribe(activeVacations => {
+    const unsubscribe = activeHolidays.subscribe(activeVacations => {
 		activeVacation = activeVacations[stateCode];
 	});
 
@@ -27,6 +29,7 @@
             activeVacation
         })
     }
+
 </script>
 
 <path bind:this={ref}

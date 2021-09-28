@@ -12,7 +12,7 @@
     onMount(()=>{
         splide = new Splide(ref, {
             start,
-            height: "100%",
+            // height: "100px",
         }).mount();
 
         splide.on('move', function(index){
@@ -23,12 +23,19 @@
     export function go(index){
         splide.go(index)
     }
+
+    $: {
+        if (splide){
+            splide.go(start)
+        }
+    }
 </script>
 
 
 
-<div class="splide " bind:this={ref}>
-    <div class="splide__track bg-green-800">
+<div class="splide h-full" bind:this={ref}>
+    <!-- make overflow visible for cool effect auf der linken seide weischde bescheid wa -->
+    <div class="splide__track bg-green-800 overflow-visible h-full">
         <div class="splide__list h-full bg-red-800">
             <slot></slot>
         </div>

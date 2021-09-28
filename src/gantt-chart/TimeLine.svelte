@@ -1,66 +1,53 @@
+<script context="module">
+    import { writable } from 'svelte/store';
+    // we export the relX position so that it can be used by the line component
+    export const relX = writable(0);
+</script>
+
 <script>
-    import {scaleLinear, scaleTime} from 'd3'
-    import { onMount } from 'svelte';
-    import { createEventDispatcher } from 'svelte';
+import {scaleLinear, scaleTime} from 'd3'
+import { onMount } from 'svelte';
+import { createEventDispatcher } from 'svelte';
+import {selectedDate, selectedYear, firstDateOfSelectedYear, lastDateOfSelectedYear} from 'stores/selection.js';
 
-    const dispatch = createEventDispatcher();
-
-    let ref;
-    let unix;
-    let relX;
-
-    export let min;
-    export let max;
-    export let date;
-
-    function clamp(num, [min, max]){
-        return Math.min(Math.max(num, min), max);
-    }
-    
-    let width = 0; //initial value damit der folgende code nicht breakt
-    $: scaleDay = scaleLinear()
-                    .domain([0, width])
-                    .range([min, max])
-                    .clamp(true)
-    
+const dispatch = createEventDispatcher();
 
 
+let ref;
+let unix;
+// let relX;
 
-    let ticks =  scaleTime()
-                    .domain([new Date(2021,0,1), new Date(2021,11,31)])
-                    .range([0, 100])
-                    .ticks()
+// export let min;
+// export let max;
+// export let date;
 
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
-    "July", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ]
+function clamp(num, [min, max]){
+    return Math.min(Math.max(num, min), max);
+}
 
-function handleInput(e){
-    dispatch('change', {
-        date: new Date(unix)
-    })
+let width = 0; //initial value damit der folgende code nicht breakt
+$: scaleDay = scaleLinear()
+                .domain([0, width])
+                .range([$firstDateOfSelectedYear, $lastDateOfSelectedYear])
+                .clamp(true)
+
+
+
+$:{
+    // update the relX position if the date or width changes
+    relX.set(scaleDay.invert($selectedDate))
 }
 
 
-$: relX = scaleDay.invert(date)
-
 function resizeHandler(){
     width = ref.getBoundingClientRect().width
-    // scaleDay = scaleLinear()
-    //                 .domain([0, width])
-    //                 .range([min, max])
-    //                 .clamp(true)
-    // relX = scaleDay.invert(date);
-    // console.log(relX);
 }
 onMount(resizeHandler)
 
 function moveHandler(clientX){
     let rect = ref.getBoundingClientRect()
-    relX = clamp(clientX - rect.x, [0, width])
-    dispatch('change', {
-            date: scaleDay(relX)
-    })
+    relX.set(clamp(clientX - rect.x, [0, width]))
+    selectedDate.set(scaleDay($relX))
 }
 
 const mouseMoveHandler = ({clientX}) => moveHandler(clientX)
@@ -81,6 +68,7 @@ function attachTouchMoveListener(e){
 }
 
 
+
 </script>
 
 <svelte:window on:resize={resizeHandler} />
@@ -93,7 +81,7 @@ function attachTouchMoveListener(e){
     on:mousedown|preventDefault={attachMouseMoveListener}
     
     >
-    <div class="slider__thumb" style="transform: translateX(calc({relX}px - var(--thumbwidth)/2))"></div>
+    <div class="slider__thumb" style="transform: translateX(calc({$relX}px - var(--thumbwidth)/2))"></div>
 
     
 </div>
@@ -106,6 +94,7 @@ function attachTouchMoveListener(e){
         background: green;
         pointer-events: none;
         position: absolute;
+        border-radius: 50px;
 
     }
     .range-wrapper{
@@ -114,7 +103,8 @@ function attachTouchMoveListener(e){
         position: relative;
         width: 100%;
         height: var(--trackheight);
-        overflow: hidden;
+        /* overflow: hidden; */
+        /* border-radius: 5px; */
         
     }
     .range-input{

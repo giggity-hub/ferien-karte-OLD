@@ -46,12 +46,13 @@
 			}
 		};
 	}
-    console.log(popperVacation);
+
 </script>
 
 
+    
 
-<div on:mousedown={stopPropagation} class:show={popperStateCode} class="tooltip p-4 bg-gray-900 shadow-lg " bind:this={ref} class:transition={isTransitionEnabled} >
+<div on:mousedown={stopPropagation} class:hidden={!popperStateCode} class="tooltip p-4 bg-gray-900 shadow-lg flex flex-col" bind:this={ref} class:transition={isTransitionEnabled} >
 
     <div class="flex ">
         <div class="coat-of-arms  w-10 ">
@@ -64,6 +65,7 @@
             <p class="text-xs mt-1">
                 {#if popperVacation}
                     <span class="text-{popperVacation.type.toLowerCase()}">{popperVacation.name}</span>
+                    {popperVacation.start} bis {popperVacation.end}
                 {:else}
                     <span class="text-sommer">Keine Ferien</span>
                 {/if}
@@ -71,15 +73,24 @@
             </p>
         </div>
     </div>
-
+    <div class="bg-red-200">
+        <button class="btn btn-blue " >Letzte Ferien</button>
+        <button class="btn btn-blue">Nächste Ferien</button>
+    </div>
     <!-- Selected State = {popperStateCode} -->
     
-
 </div>
 
-
 <style>
-
+    .btn {
+        @apply font-bold py-2 px-4 rounded;
+    }
+    .btn-blue {
+        @apply bg-blue-500 text-white;
+    }
+    .btn-blue:hover {
+        @apply bg-blue-700;
+    }
 
     .tooltip{
         position: absolute;
